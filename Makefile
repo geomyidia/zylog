@@ -1,4 +1,4 @@
-VERSION = 0.1.0
+VERSION = 0.2.0
 BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylog -version $(VERSION))
 
 default: lint
@@ -10,7 +10,7 @@ build: deps
 	@go build -ldflags="$(BUILD_FLAGS)" github.com/zylisp/zylog
 
 modules-init:
-	GO111MODULE=on go mod init github.com/MediaMath/identity-1p3p-service
+	GO111MODULE=on go mod init github.com/zylisp/zylog
 
 modules-update:
 	GO111MODULE=on go get -u

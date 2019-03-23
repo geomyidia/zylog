@@ -1,4 +1,4 @@
-package zylog
+package logger
 
 import (
 	"bytes"

@@ -2,7 +2,8 @@
 
 *A simple wrapper for customized logrus usage*
 
-## Usage
+
+## Setup
 
 Here's an example of setting up global logging for use by your app in your
 app's `logging` package, based on configuration pulled in by Viper (from either
@@ -14,7 +15,7 @@ package logging
 
 import (
 	cfg "github.com/spf13/viper"
-	log "github.com/zylisp/zylog/zylog"
+	log "github.com/zylisp/zylog/logger"
 )
 
 func init() {
@@ -25,6 +26,22 @@ func init() {
 		ReportCaller: cfg.GetBool("logging.report-caller"),
 	})
 }
+```
+
+
+## Usage
+
+The setup configures the logrus logger, so wherever you want to log, simply
+use logrus as you would normally:
+
+```go
+...
+import (
+	log "github.com/sirupsen/logrus"
+)
+...
+log.Info("You are standing in an open field west of a white house.")
+...
 ```
 
 
