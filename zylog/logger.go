@@ -19,10 +19,10 @@ type TextFormatter struct {
 }
 
 type ZyLogOptions struct {
+	Colored      bool
 	Level        string
 	Output       string // stdout, stderr, or filesystem
 	ReportCaller bool
-	Colored      bool
 }
 
 const (
