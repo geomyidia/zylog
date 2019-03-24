@@ -45,6 +45,18 @@ log.Info("You are standing in an open field west of a white house.")
 ```
 
 
+There's some more example usage in the demo (`./cmd/demo/main.go`). To run it:
+
+```bash
+$ make build
+$ ./bin/demo
+```
+
+At which point you should see something like the following:
+
+![screenshot](screenshot.png)
+
+
 ## License
 
 © 2019, ZYLISP Project

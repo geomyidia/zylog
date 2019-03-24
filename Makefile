@@ -1,13 +1,18 @@
 VERSION = 0.2.0
-BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylog -version $(VERSION))
+BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylog/logger -version $(VERSION))
 
 default: lint
 
 build-deps:
 	go get github.com/ahmetb/govvv
 
-build: deps
-	@go build -ldflags="$(BUILD_FLAGS)" github.com/zylisp/zylog
+build:
+# 	@go build -ldflags="$(BUILD_FLAGS)" github.com/zylisp/zylog/logger
+	@go build \
+		-o ./bin/demo \
+		-ldflags="$(BUILD_FLAGS)" \
+		github.com/zylisp/zylog/cmd/demo
+
 
 modules-init:
 	GO111MODULE=on go mod init github.com/zylisp/zylog
