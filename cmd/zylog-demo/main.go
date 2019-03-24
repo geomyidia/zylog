@@ -1,3 +1,9 @@
+/*
+A demo utility for the zylog logger wrapper.
+
+Log entries with both caller (package, function, and line number) as well as
+without caller information are demonstrated.
+*/
 package main
 
 import (

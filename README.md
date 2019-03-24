@@ -45,7 +45,7 @@ log.Info("You are standing in an open field west of a white house.")
 ```
 
 
-There's some more example usage in the demo (`./cmd/demo/main.go`). To run it:
+There's some more example usage in the demo (`./cmd/zylog-demo/main.go`). To run it:
 
 ```bash
 $ make build

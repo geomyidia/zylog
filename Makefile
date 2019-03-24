@@ -9,9 +9,9 @@ build-deps:
 build:
 # 	@go build -ldflags="$(BUILD_FLAGS)" github.com/zylisp/zylog/logger
 	@go build \
-		-o ./bin/demo \
+		-o ./bin/zylog-demo \
 		-ldflags="$(BUILD_FLAGS)" \
-		github.com/zylisp/zylog/cmd/demo
+		github.com/zylisp/zylog/cmd/zylog-demo
 
 
 modules-init:
