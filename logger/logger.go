@@ -1,3 +1,54 @@
+/*
+This package performs basic setup of the logrus library with custom formatting.
+
+Overview
+
+Zylog logger's primary features include:
+
+	* Exceedingly simple setup
+	* Colored output (enabled/disabled with a boolean)
+	* Logging level (lower-case string)
+	* Output (only stdout and stderr currently supported)
+	* ReportCaller (enabled/disabled with a boolean; prints package, function
+	  and line number)
+	* Custom format (similar to the Clojure twig library and the LFE logjam
+		libraries)
+
+Setup is done with the zylog logger, after which logrus may be used as designed
+by its author.
+
+Installation
+
+	$ go get github.com/zylisp/zylog/logger
+
+Additionally, there is a demo you may install and run:
+
+	$ go get github.com/zylisp/zylog/cmd/zylog-demo
+
+Configuration
+
+To configure the logger, simply pass an options struct reference to
+SetupLogging. For example,
+
+package main
+
+	import (
+		logger "github.com/zylisp/zylog/logger"
+		log "github.com/sirupsen/logrus"
+	)
+
+	func main () {
+		log.SetupLogging(&log.ZyLogOptions{
+			Colored:      true,
+			Level:        "info",
+			Output:       "stdout",
+			ReportCaller: false,
+		})
+		// More app code
+		log.Info("App started up!")
+	}
+
+*/
 package logger
 
 import (
@@ -12,12 +63,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// TextFormatter formats logs into text
+// TextFormatter formats logs into text.
 type TextFormatter struct {
 	// Force disabling colors.
 	DisableColors bool
 }
 
+// The Options used by the zylog logger to set up logrus.
 type ZyLogOptions struct {
 	Colored      bool
 	Level        string
@@ -31,6 +83,7 @@ const (
 	NotImplementedError string = "Not yet implemented: %s"
 )
 
+// Logger setup function.
 func SetupLogging(opts *ZyLogOptions) {
 	level, err := log.ParseLevel(opts.Level)
 	if err != nil {
@@ -56,6 +109,19 @@ func SetupLogging(opts *ZyLogOptions) {
 	log.Info("Logging initialized.")
 }
 
+// Provides the custom formatting of the zylog logger.
+//
+// In particular, logs output in the following form:
+//
+//	YYYY-mm-DDTHH:MM:SS-TZ:00 LEVEL ▶ logged message ...
+//
+// If the ReportCaller option is set to true, the log output will have the
+// following form:
+//
+//	YYYY-mm-DDTHH:MM:SS-TZ:00 LEVEL [pkghost/auth/proj/file.Func:LINENUM] ▶ logged message ...
+//
+// Any structured data passed as logrus fields will be appended to the above
+// line forms.
 func (f *TextFormatter) Format(entry *log.Entry) ([]byte, error) {
 	var b *bytes.Buffer
 
@@ -90,6 +156,8 @@ func (f *TextFormatter) Format(entry *log.Entry) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
+// Determine the color of the log level based upon the string value of the log
+// level.
 func ColorLevel(level string) string {
 	switch level {
 	case "TRACE":

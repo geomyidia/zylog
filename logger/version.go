@@ -19,6 +19,8 @@ var (
 	BuildDate string
 )
 
+// Returns a version string as set by the Makefile when the library was last
+// compiled. If a version cannot be extracted, the string 'NA' is returned.
 func VersionString() string {
 	if Version == "" {
 		return "N/A"
@@ -26,6 +28,9 @@ func VersionString() string {
 	return Version
 }
 
+// Returns a build string that provides the git branch upon which the build was
+// made, the git commit of that branch, as well as the build date. If a build
+// string cannot be constructed, the string 'NA' is returned.
 func BuildString() string {
 	if GitCommit == "" {
 		return "N/A"
