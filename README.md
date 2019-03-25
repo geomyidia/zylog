@@ -57,6 +57,13 @@ At which point you should see something like the following:
 ![screenshot](screenshot.png)
 
 
+## Background
+
+Note that the formatting provided by this util lib is inspired by the
+[Twig Clojure](https://github.com/clojusc/twig) and the
+[Logjam LFE](https://github.com/lfex/logjam) libraries.
+
+
 ## License
 
 © 2019, ZYLISP Project
