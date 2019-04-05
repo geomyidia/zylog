@@ -57,6 +57,15 @@ At which point you should see something like the following:
 ![screenshot](screenshot.png)
 
 
+## Development
+
+A convenience Bash environment file is provided for easy setup:
+
+```bash
+$ . .env
+```
+
+
 ## Background
 
 Note that the formatting provided by this util lib is inspired by the
