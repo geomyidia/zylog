@@ -1,4 +1,4 @@
-VERSION = 0.2.0
+VERSION = 0.1.3
 BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylog/logger -version $(VERSION))
 GOLANGCI_LINT=$(shell which golangci-lint)
 DEFAULT_GOPATH=$(shell tr ':' '\n' <<< "$$GOPATH"|sed '/^$$/d'|head -1)
