@@ -32,7 +32,7 @@ install-goimports:
 $(GOLANGCI_LINT):
 	@echo "Couldn't find $(GOLANGCI_LINT); installing ..."
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \
-	sh -s -- -b $(DEFAULT_GOBIN) latest
+	sh -s -- -b $(DEFAULT_GOBIN) v1.15.0
 
 lint: $(GOLANGCI_LINT)
 	GO111MODULE=on golangci-lint \
