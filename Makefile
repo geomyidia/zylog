@@ -4,7 +4,7 @@ GOLANGCI_LINT=$(shell which golangci-lint)
 DEFAULT_GOPATH=$(shell tr ':' '\n' <<< "$$GOPATH"|sed '/^$$/d'|head -1)
 DEFAULT_GOBIN=$(DEFAULT_GOPATH)/bin
 
-default: lint
+default: lint build
 
 default-gopath:
 	@echo $(DEFAULT_GOPATH)
