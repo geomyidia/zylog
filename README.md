@@ -76,6 +76,7 @@ Note that the formatting provided by this util lib is inspired by the
 ## License
 
 © 2019, ZYLISP Project
+
 © 2019, geomyidia Project
 
 Apache License, Version 2.0
