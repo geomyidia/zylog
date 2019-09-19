@@ -1,5 +1,5 @@
 /*
-A demo utility for the zylog logger wrapper.
+Package main offers a demo utility for the zylog logger wrapper.
 
 Log entries with both caller (package, function, and line number) as well as
 without caller information are demonstrated.
@@ -10,10 +10,11 @@ import (
 	"fmt"
 	"runtime"
 
-	log "github.com/sirupsen/logrus"
 	logger "github.com/geomyidia/zylog/logger"
+	log "github.com/sirupsen/logrus"
 )
 
+// SetupLogger ...
 func SetupLogger() {
 	logger.SetupLogging(&logger.ZyLogOptions{
 		Colored:      true,
@@ -23,6 +24,7 @@ func SetupLogger() {
 	})
 }
 
+// SetupLoggerNoCaller ...
 func SetupLoggerNoCaller() {
 	logger.SetupLogging(&logger.ZyLogOptions{
 		Colored:      true,

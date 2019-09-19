@@ -57,3 +57,10 @@ lint: $(GOLANGCI_LINT)
 
 goimports:
 	GO111MODULE=on goimports -v -w ./
+
+clean:
+	rm -rf bin/*
+
+clean-all:
+	go clean --modcache
+	
