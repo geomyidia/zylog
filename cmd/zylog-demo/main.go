@@ -11,7 +11,7 @@ import (
 	"runtime"
 
 	log "github.com/sirupsen/logrus"
-	logger "github.com/zylisp/zylog/logger"
+	logger "github.com/geomyidia/zylog/logger"
 )
 
 func SetupLogger() {

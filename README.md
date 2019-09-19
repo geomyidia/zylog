@@ -15,7 +15,7 @@ package logging
 
 import (
 	cfg "github.com/spf13/viper"
-	log "github.com/zylisp/zylog/logger"
+	log "github.com/geomyidia/zylog/logger"
 )
 
 func init() {
@@ -54,7 +54,7 @@ $ ./bin/demo
 
 At which point you should see something like the following:
 
-![screenshot](screenshot.png)
+![screenshot](assets/images/screenshot.png)
 
 
 ## Development
@@ -76,5 +76,6 @@ Note that the formatting provided by this util lib is inspired by the
 ## License
 
 © 2019, ZYLISP Project
+© 2019, geomyidia Project
 
 Apache License, Version 2.0

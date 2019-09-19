@@ -1,27 +1,36 @@
-VERSION = 0.1.3
-BUILD_FLAGS=$(shell govvv -flags -pkg github.com/zylisp/zylog/logger -version $(VERSION))
-GOLANGCI_LINT=$(shell which golangci-lint)
-DEFAULT_GOPATH=$(shell tr ':' '\n' <<< "$$GOPATH"|sed '/^$$/d'|head -1)
+VERSION = 0.1.4
+
+DEFAULT_GOPATH=$(shell echo $$GOPATH|tr ':' '\n'|awk '!x[$$0]++'|sed '/^$$/d'|head -1)
+ifeq ($(DEFAULT_GOPATH),)
+DEFAULT_GOPATH := ~/go
+endif
 DEFAULT_GOBIN=$(DEFAULT_GOPATH)/bin
+export PATH:=$(PATH):$(DEFAULT_GOBIN)
+
+GOLANGCI_LINT=$(DEFAULT_GOBIN)/golangci-lint
+
+LD_VERSION = -X $(FQ_PROJ)/common.Version=$(VERSION)
+LD_BUILDDATE = -X $(FQ_PROJ)/common.BuildDate=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+LD_GITCOMMIT = -X $(FQ_PROJ)/common.GitCommit=$(shell git rev-parse --short HEAD)
+LD_GITBRANCH = -X $(FQ_PROJ)/common.GitBranch=$(shell git rev-parse --abbrev-ref HEAD)
+LD_GITSUMMARY = -X $(FQ_PROJ)/common.GitSummary=$(shell git describe --tags --dirty --always)
+
+LDFLAGS = -w -s $(LD_VERSION) $(LD_BUILDDATE) $(LD_GITBRANCH) $(LD_GITSUMMARY) $(LD_GITCOMMIT)
 
 default: lint build
 
 default-gopath:
 	@echo $(DEFAULT_GOPATH)
 
-build-deps:
-	go get github.com/ahmetb/govvv
-
 build:
-# 	@go build -ldflags="$(BUILD_FLAGS)" github.com/zylisp/zylog/logger
 	@GO111MODULE=on go build \
 		-o ./bin/zylog-demo \
-		-ldflags="$(BUILD_FLAGS)" \
-		github.com/zylisp/zylog/cmd/zylog-demo
+		-ldflags="$(LDFLAGS)" \
+		github.com/geomyidia/zylog/cmd/zylog-demo
 
 
 modules-init:
-	GO111MODULE=on go mod init github.com/zylisp/zylog
+	GO111MODULE=on go mod init github.com/geomyidia/zylog
 
 modules-update:
 	GO111MODULE=on go get -u
