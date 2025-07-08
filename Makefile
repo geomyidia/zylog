@@ -100,3 +100,22 @@ $(TEST_RUNNER):
 test: $(TEST_RUNNER)
 	@echo '>> Running all tests'
 	@GO111MODULE=on $(TEST_RUNNER) --format testname -- ./...
+
+#############################################################################
+###   Release Process   #####################################################
+#############################################################################
+
+tag:
+	@echo "Tags:"
+	@git tag|tail -5
+	@git tag "v$(VERSION)"
+	@echo "New tag list:"
+	@git tag|tail -6
+
+tag-and-push: tag
+	@git push --tags
+
+tag-delete: VERSION ?= 0.0.0
+tag-delete:
+	@git tag --delete v$(VERSION)
+	@git push --delete origin v$(VERSION)
