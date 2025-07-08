@@ -48,14 +48,23 @@ $(GOLANGCI_LINT):
 	sh -s -- -b $(DEFAULT_GOBIN) v2.2.1
 
 lint: $(GOLANGCI_LINT)
-	GO111MODULE=on golangci-lint \
+	@echo '>> Linting source code'
+	@echo "($$($(GOLANGCI_LINT) --version))"
+	@$(GOLANGCI_LINT) run \
+	--enable=errcheck \
+	--enable=dupl \
+	--enable=unparam \
+	--enable=wastedassign \
+	--enable=ineffassign \
 	--enable=revive \
 	--enable=gocritic \
 	--enable=misspell \
 	--enable=unparam \
 	--enable=lll \
 	--enable=goconst \
-	run ./...
+	--enable=govet \
+	--show-stats \
+	./...
 
 rm-lint:
 	@echo "Removing golangci-lint ..."

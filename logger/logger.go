@@ -1,5 +1,5 @@
 /*
-This package performs basic setup of the logrus library with custom formatting.
+Package logger performs basic setup of the logrus library with custom formatting.
 
 # Overview
 
@@ -70,7 +70,7 @@ type TextFormatter struct {
 	DisableColors bool
 }
 
-// ZyLogOption are used by the zylog logger to set up logrus.
+// ZyLogOptions are used by the zylog logger to set up logrus.
 type ZyLogOptions struct {
 	Colored      bool
 	Level        string
