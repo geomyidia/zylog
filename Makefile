@@ -5,6 +5,7 @@ ORG = geomyidia
 PROJ = zylog
 FQ_PROJ = $(DVCS_HOST)/$(ORG)/$(PROJ)
 
+GO ?= go
 DEFAULT_GOPATH=$(shell echo $$GOPATH|tr ':' '\n'|awk '!x[$$0]++'|sed '/^$$/d'|head -1)
 ifeq ($(DEFAULT_GOPATH),)
 DEFAULT_GOPATH := ~/go
@@ -28,19 +29,19 @@ default-gopath:
 	@echo $(DEFAULT_GOPATH)
 
 build:
-	GO111MODULE=on go build \
+	GO111MODULE=on $(GO) build \
 		-ldflags "$(LDFLAGS)" \
 		-o ./bin/zylog-demo \
 		github.com/geomyidia/zylog/cmd/zylog-demo
 
 modules-init:
-	GO111MODULE=on go mod init github.com/geomyidia/zylog
+	GO111MODULE=on $(GO) mod init github.com/geomyidia/zylog
 
 modules-update:
-	GO111MODULE=on go get -u
+	GO111MODULE=on $(GO) get -u
 
 install-goimports:
-	GO111MODULE=on go get golang.org/x/tools/cmd/goimports
+	GO111MODULE=on $(GO) get golang.org/x/tools/cmd/goimports
 
 $(GOLANGCI_LINT):
 	@echo "Couldn't find $(GOLANGCI_LINT); installing ..."
@@ -77,15 +78,15 @@ clean:
 	rm -rf bin/*
 
 clean-all:
-	go clean --modcache
+	$(GO) clean --modcache
 
 show-ldflags:
 	@echo $(LDFLAGS)
 
 upgrade-deps:
 	@echo ">> Upgrading Go module dependencies ..."
-	@go get -u ./...
-	@go mod tidy
+	@$(GO) get -u ./...
+	@$(GO) mod tidy
 
 TEST_RUNNER = $(DEFAULT_GOBIN)/gotestsum
 $(TEST_RUNNER):
