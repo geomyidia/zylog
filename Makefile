@@ -86,3 +86,16 @@ upgrade-deps:
 	@echo ">> Upgrading Go module dependencies ..."
 	@go get -u ./...
 	@go mod tidy
+
+TEST_RUNNER = $(DEFAULT_GOBIN)/gotestsum
+$(TEST_RUNNER):
+	@echo ">> Couldn't find $(TEST_RUNNER); installing ..."
+	GOPATH=$(DEFAULT_GOPATH) \
+	GOBIN=$(DEFAULT_GOBIN) \
+	GO111MODULE=on \
+	$(GO) get gotest.tools/gotestsum && \
+	$(GO) install gotest.tools/gotestsum
+
+test: $(TEST_RUNNER)
+	@echo '>> Running all tests'
+	@GO111MODULE=on $(TEST_RUNNER) --format testname -- ./...
