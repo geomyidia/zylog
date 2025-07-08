@@ -70,3 +70,8 @@ clean-all:
 
 show-ldflags:
 	@echo $(LDFLAGS)
+
+upgrade-deps:
+	@echo ">> Upgrading Go module dependencies ..."
+	@go get -u ./...
+	@go mod tidy
