@@ -1,18 +1,18 @@
 /*
 This package performs basic setup of the logrus library with custom formatting.
 
-Overview
+# Overview
 
 Zylog logger's primary features include:
 
-	* Exceedingly simple setup
-	* Colored output (enabled/disabled with a boolean)
-	* Logging level (lower-case string)
-	* Output (only stdout and stderr currently supported)
-	* ReportCaller (enabled/disabled with a boolean; prints package, function
-	  and line number)
-	* Custom format (similar to the Clojure twig library and the LFE logjam
-		libraries)
+  - Exceedingly simple setup
+  - Colored output (enabled/disabled with a boolean)
+  - Logging level (lower-case string)
+  - Output (only stdout and stderr currently supported)
+  - ReportCaller (enabled/disabled with a boolean; prints package, function
+    and line number)
+  - Custom format (similar to the Clojure twig library and the LFE logjam
+    libraries)
 
 Setup is done with the zylog logger, after which logrus may be used as designed
 by its author.
@@ -25,7 +25,7 @@ Additionally, there is a demo you may install and run:
 
 	$ go get github.com/geomyidia/zylog/cmd/zylog-demo
 
-Configuration
+# Configuration
 
 To configure the logger, simply pass an options struct reference to
 SetupLogging. For example,
@@ -47,7 +47,6 @@ package main
 		// More app code
 		log.Info("App started up!")
 	}
-
 */
 package logger
 
@@ -61,6 +60,8 @@ import (
 
 	"github.com/fatih/color"
 	log "github.com/sirupsen/logrus"
+
+	"github.com/geomyidia/zylog/errors"
 )
 
 // TextFormatter formats logs into text.
@@ -69,7 +70,7 @@ type TextFormatter struct {
 	DisableColors bool
 }
 
-// The Options used by the zylog logger to set up logrus.
+// ZyLogOption are used by the zylog logger to set up logrus.
 type ZyLogOptions struct {
 	Colored      bool
 	Level        string
@@ -77,17 +78,11 @@ type ZyLogOptions struct {
 	ReportCaller bool
 }
 
-const (
-	LogLevelError       string = "Could not set configured log level"
-	LogOutputError      string = "Unsupported log output: %s"
-	NotImplementedError string = "Not yet implemented: %s"
-)
-
-// Logger setup function.
+// SetupLogging performs the setup of the zylog logger.
 func SetupLogging(opts *ZyLogOptions) {
 	level, err := log.ParseLevel(opts.Level)
 	if err != nil {
-		panic(LogLevelError)
+		panic(errors.ErrLogLevel)
 	}
 	log.SetLevel(level)
 	switch opts.Output {
@@ -96,9 +91,9 @@ func SetupLogging(opts *ZyLogOptions) {
 	case "stderr":
 		log.SetOutput(os.Stderr)
 	case "filesystem":
-		panic(fmt.Sprintf(NotImplementedError, "filesystem log output"))
+		panic(errors.ErrNotImplemented("filesystem log output"))
 	default:
-		panic(fmt.Sprintf(LogOutputError, opts.Output))
+		panic(errors.ErrLogOutput(opts.Output))
 	}
 	disableColors := !opts.Colored
 	color.NoColor = disableColors
@@ -109,7 +104,7 @@ func SetupLogging(opts *ZyLogOptions) {
 	log.Info("Logging initialized.")
 }
 
-// Provides the custom formatting of the zylog logger.
+// Format provides the custom formatting of the zylog logger.
 //
 // In particular, logs output in the following form:
 //
@@ -134,11 +129,11 @@ func (f *TextFormatter) Format(entry *log.Entry) ([]byte, error) {
 	time := color.GreenString(entry.Time.Format(time.RFC3339))
 	level := ColorLevel(strings.ToUpper(entry.Level.String()))
 
-	b.WriteString(fmt.Sprintf("%s %s", time, level))
+	fmt.Fprintf(b, "%s %s", time, level)
 	if entry.Logger.ReportCaller {
-		b.WriteString(fmt.Sprintf(" [%s:%s]",
+		fmt.Fprintf(b, " [%s:%s]",
 			color.HiYellowString(entry.Caller.Function),
-			color.YellowString(strconv.Itoa(entry.Caller.Line))))
+			color.YellowString(strconv.Itoa(entry.Caller.Line)))
 	}
 	if entry.Message != "" {
 		b.WriteString(color.CyanString(" ▶ "))
@@ -149,15 +144,15 @@ func (f *TextFormatter) Format(entry *log.Entry) ([]byte, error) {
 		b.WriteString(" || ")
 	}
 	for key, value := range entry.Data {
-		b.WriteString(fmt.Sprintf("%s={%s}, ", key, value))
+		fmt.Fprintf(b, "%s={%s}, ", key, value)
 	}
 
 	b.WriteByte('\n')
 	return b.Bytes(), nil
 }
 
-// Determine the color of the log level based upon the string value of the log
-// level.
+// ColorLevel determines the color of the log level based upon the string
+// value of the log level.
 func ColorLevel(level string) string {
 	switch level {
 	case "TRACE":

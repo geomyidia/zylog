@@ -1,4 +1,4 @@
-VERSION = 0.1.5
+VERSION = 0.1.6
 
 DVCS_HOST = github.com
 ORG = geomyidia
@@ -44,20 +44,22 @@ install-goimports:
 
 $(GOLANGCI_LINT):
 	@echo "Couldn't find $(GOLANGCI_LINT); installing ..."
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \
-	sh -s -- -b $(DEFAULT_GOBIN) v1.15.0
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | \
+	sh -s -- -b $(DEFAULT_GOBIN) v2.2.1
 
 lint: $(GOLANGCI_LINT)
 	GO111MODULE=on golangci-lint \
-	--enable=gofmt \
-	--enable=golint \
+	--enable=revive \
 	--enable=gocritic \
 	--enable=misspell \
-	--enable=nakedret \
 	--enable=unparam \
 	--enable=lll \
 	--enable=goconst \
 	run ./...
+
+rm-lint:
+	@echo "Removing golangci-lint ..."
+	rm -f $(GOLANGCI_LINT)
 
 goimports:
 	GO111MODULE=on goimports -v -w ./
